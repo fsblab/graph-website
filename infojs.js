@@ -87,6 +87,17 @@ function drawItemOnCanvas() {
 }
 
 
+function clearEverything() {
+    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><br>";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    numberOfItem = 0;
+
+    for (i = 0; i < hashmapOfItems.size; i++) {
+        hashmapOfItems.delete(i);
+    }
+}
+
+
 function deleteItem(clickedId) {
     document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><br>";
     ctx.clearRect(0, 0, canvas.width, canvas.height);

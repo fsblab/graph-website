@@ -41,3 +41,12 @@ canvas {
 	clear: both;
 	max-width: 17%;
 }
+
+.deleteButton {
+	margin: 0%;
+	margin-left: 4px;
+	margin-right: 4px;
+	padding-top: 6px;
+	clear: both;
+	float: left;
+}
