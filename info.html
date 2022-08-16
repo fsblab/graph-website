@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="icon" href="assets/favicon.png">
+		<link rel="stylesheet" href="stylesheet.css">
+		<script src="infojs.js"></script>
+		<title>info</title>
+	</head>
+
+	<body>
+
+		<div>
+			<input id="selectButton" onclick="setCursorToNormal()" type="image" name="select" src="assets/select.png" alt="select">
+			<input id="newItemButton" onclick="setCursorToCrosshair()" type="image" name="newItem" src= "assets/newItem.png" alt="newItem">
+		</div>
+
+		<canvas id="pinBoard" onclick="setNewItem(event)">
+		</canvas>
+
+		<div class="items" id="listOfItems">
+			<b>List of Items:</b>
+			<br>
+		</div>
+
+		<div class="items" id="setItemName">
+			<label for="itemName">Item name:</label>
+  			<input type="text" id="itemName" name="itemName">
+			<input type="submit" value="Set" id="setButton" onclick="drawItemOnCanvas()">
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,43 @@
+html {
+   margin: 0px;
+   height: 100%;
+   width: 100%;
+}
+
+body {
+	background: grey;
+	margin: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+input {
+	margin: 10px;
+}
+
+canvas {
+	background: white;
+	float: left;
+	height: 85%;
+	width: 80%;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.items {
+	background: white;
+	font-size: 14pt;
+	min-width: 10%;
+}
+
+#listOfItems {
+	float: right;
+	margin-right: 10px;
+}
+
+#setItemName {
+	margin-left: 10px;
+	clear: both;
+	max-width: 17%;
+}
