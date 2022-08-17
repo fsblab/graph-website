@@ -32,7 +32,6 @@ canvas {
 }
 
 #listOfItems {
-	float: right;
 	margin-right: 10px;
 }
 
@@ -47,6 +46,21 @@ canvas {
 	margin-left: 4px;
 	margin-right: 4px;
 	padding-top: 6px;
-	clear: both;
 	float: left;
+}
+
+.radioAndCheckbox {
+	float: right;
+	margin: 0%;
+	margin-right: 4px;
+}
+
+#connectButton {
+	clear: both;
+	float: right;
+}
+
+#itemdiv {
+	float: right;
+	min-width: 10%;
 }

@@ -3,6 +3,7 @@ var newItemIsSettable;
 var setItems;
 var hashmapOfItems;
 var nameOfItem;
+var radioButtonsVisibility, checkboxesVisibility;
 
 //some properties concerning every circle
 const radius = 16;
@@ -14,9 +15,14 @@ function init () {
     canvas = document.getElementById("pinBoard");
     ctx = canvas.getContext("2d");
     newItemIsSettable = false;
+
     setItems = document.getElementById("setItemName");
     setItems.style.visibility = "hidden";
 
+    connectItems = document.getElementById("connectButton");
+    connectItems.style.visibility = "hidden";
+
+    
     hashmapOfItems = new Map();
 
 
@@ -81,14 +87,39 @@ function drawItemOnCanvas() {
 
         hashmapOfItems.set(numberOfItem, new NewItem(nameOfItem, xPosition, yPosition, numberOfItem));
 
-        document.getElementById("listOfItems").innerHTML += "<br>" + numberOfItem + "&emsp;" + nameOfItem + "<input id=numberOfItem class=\"deleteButton\" onclick=\"deleteItem(this.id)\" type=\"image\" name=\"deleteItem\" src=\"assets/del.png\" alt=\"deleteItem\">".replace("numberOfItem", numberOfItem);
+        document.getElementById("listOfItems").innerHTML += "<br>" + numberOfItem + "&emsp;" + nameOfItem + "<input id=numberOfItem class=\"deleteButton\" onclick=\"deleteItem(this.id)\" type=\"image\" name=\"deleteItem\" src=\"assets/del.png\" alt=\"deleteItem\">".replace("numberOfItem", numberOfItem) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\" name=\"radioButton\">".replace("r", "radioButton" + numberOfItem) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + numberOfItem);
+        document.getElementById("checkbox" + numberOfItem).style.visibility = "hidden";
         numberOfItem++;
     }
 }
 
 
+function uncheckRadioAndCheckboxes() {
+    for (i = 0; i < numberOfItem; i++) {
+        document.getElementById("checkbox" + i).style.visibility = "hidden";
+        document.getElementById("radioButton" + i).style.visibility = "visible";
+    }
+}
+
+
+function setupConnection(idOfRadioButton) {
+    for (i = 0; i < numberOfItem; i++) {
+        if (i == parseInt(idOfRadioButton.replace("radioButton", ""))) {
+            continue;
+        }
+        document.getElementById("radioButton" + i).style.visibility = "hidden";
+        document.getElementById("checkbox" + i).style.visibility = "visible";
+    }    
+}
+
+
+function setConnection() {
+
+}
+
+
 function clearEverything() {
-    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><br>";
+    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     numberOfItem = 0;
 
@@ -99,7 +130,7 @@ function clearEverything() {
 
 
 function deleteItem(clickedId) {
-    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><br>";
+    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (i = parseInt(clickedId); i < hashmapOfItems.size; i++) {
@@ -119,7 +150,8 @@ function deleteItem(clickedId) {
         ctx.textAlign = "center";
         ctx.fillText(i.toString(), hashmapOfItems.get(i).xPos, hashmapOfItems.get(i).yPos + 6);
 
-        document.getElementById("listOfItems").innerHTML += "<br>" + i + "&emsp;" + hashmapOfItems.get(i).nameOfItem + "<input id=numberOfItem class=\"deleteButton\" onclick=\"deleteItem(this.id)\" type=\"image\" name=\"deleteItem\" src=\"assets/del.png\" alt=\"deleteItem\">".replace("numberOfItem", i);
+        document.getElementById("listOfItems").innerHTML += "<br>" + i + "&emsp;" + hashmapOfItems.get(i).nameOfItem + "<input id=numberOfItem class=\"deleteButton\" onclick=\"deleteItem(this.id)\" type=\"image\" name=\"deleteItem\" src=\"assets/del.png\" alt=\"deleteItem\">".replace("numberOfItem", i) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\" name=\"radioButton\">".replace("r", "radioButton" + i) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + i);
+        document.getElementById("checkbox" + i).style.visibility = "hidden";
     }
 }
 

@@ -18,10 +18,17 @@
 		<canvas id="pinBoard" onclick="setNewItem(event)">
 		</canvas>
 
-		<div class="items" id="listOfItems">
-			<b>List of Items:</b>
-			<br>
+		
+		<div id="itemdiv">
+			<div class="items" id="listOfItems">
+				<b>List of Items:</b>
+				<input id="unchechRadioAndCheckboxes" class="radioAndCheckbox" type="radio" onclick="uncheckRadioAndCheckboxes()" name="radioButton">
+				<br>
+			</div>
+
+			<input id="connectButton" onclick="setConnection()" type="image" name="newItem" src= "assets/connect.png" alt="newItem">
 		</div>
+		
 
 		<div class="items" id="setItemName">
 			<label for="itemName">Item name:</label>
