@@ -1,6 +1,6 @@
 let canvas, ctx;
 var newItemIsSettable;
-var setItemsButton, connectItemsButton;
+var setItemsButton, connectItemsButton, deleteConnectionsButton;
 var mapOfItems, mapOfConnections;
 var nameOfItem;
 var radioButtonsVisibility, checkboxesVisibility;
@@ -23,6 +23,9 @@ function init () {
 
     connectItemsButton = document.getElementById("connectButton");
     connectItemsButton.style.visibility = "hidden";
+
+    deleteConnectionsButton = document.getElementById("deleteConnectionsButton");
+    deleteConnectionsButton.style.visibility = "hidden";
 
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
@@ -96,6 +99,7 @@ function uncheckRadioAndCheckboxes() {
         document.getElementById("radioButton" + i).style.visibility = "visible";
     }
     connectItemsButton.style.visibility = "hidden";
+    deleteConnectionsButton.style.visibility = "hidden";
 }
 
 
@@ -109,6 +113,7 @@ function setupConnection(idOfRadioButton) {
         document.getElementById("checkbox" + i).style.visibility = "visible";
     }
     connectItemsButton.style.visibility = "visible";
+    deleteConnectionsButton.style.visibility = "visible";
 }
 
 
@@ -128,6 +133,7 @@ function setConnection() {
     }
 
     connectItemsButton.style.visibility = "hidden";
+    deleteConnectionsButton.style.visibility = "hidden";
 
     mapOfConnections.set(numberOfRadioButtonSelected, arrayOfCheckboxesSelected);
 
@@ -145,6 +151,18 @@ function setConnection() {
 
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
+
+    //TODO: redraw the canvas
+}
+
+
+function deleteConnectionOfSelectedItem() {
+    mapOfConnections.delete(numberOfRadioButtonSelected);
+
+    connectItemsButton.style.visibility = "hidden";
+    deleteConnectionsButton.style.visibility = "hidden";
+
+    //TODO: redraw the canvas
 }
 
 
@@ -156,6 +174,9 @@ function clearEverything() {
     for (i = 0; i < mapOfItems.size; i++) {
         mapOfItems.delete(i);
     }
+
+    connectItemsButton.style.visibility = "hidden";
+    deleteConnectionsButton.style.visibility = "hidden";
 }
 
 
