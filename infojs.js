@@ -2,7 +2,6 @@ let canvas, ctx;
 var newItemIsSettable;
 var setItemsButton, connectItemsButton, deleteConnectionsButton;
 var mapOfItems, mapOfConnections;
-var nameOfItem;
 var radioButtonsVisibility, checkboxesVisibility;
 var numberOfRadioButtonSelected;
 var arrayOfCheckboxesSelected;
@@ -17,9 +16,6 @@ function init () {
     canvas = document.getElementById("pinBoard");
     ctx = canvas.getContext("2d");
     newItemIsSettable = false;
-
-    setItemsButton = document.getElementById("setItemName");
-    setItemsButton.style.visibility = "hidden";
 
     connectItemsButton = document.getElementById("connectButton");
     connectItemsButton.style.visibility = "hidden";
@@ -74,19 +70,9 @@ function setNewItem(e) {
     yPosition = (e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
 
     if (newItemIsSettable) {
-        setItemsButton.style.visibility = "visible";
-    }
-}
+        drawOneItemOnTheCanvas(numberOfItem, xPosition, yPosition);
 
-
-function drawItemOnCanvas() {
-    nameOfItem = document.getElementById("itemName").value;
-
-    if (nameOfItem) {
-        drawOneItemOnTheCanvas(numberOfItem, nameOfItem, xPosition, yPosition);
-
-        setItemsButton.style.visibility = "hidden";
-        mapOfItems.set(numberOfItem, new NewItem(nameOfItem, xPosition, yPosition, numberOfItem));
+        mapOfItems.set(numberOfItem, new NewItem(numberOfItem, xPosition, yPosition));
         numberOfItem++;
     }
 }
@@ -193,7 +179,7 @@ function deleteItem(clickedId) {
     numberOfItem--;
 
     for (i = 0; i < mapOfItems.size; i++) {
-        drawOneItemOnTheCanvas(i, mapOfItems.get(i).nameOfItem, mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
+        drawOneItemOnTheCanvas(i, mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
     }
 }
 
