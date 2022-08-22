@@ -1,10 +1,11 @@
 let canvas, ctx;
 var newItemIsSettable;
 var setItemsButton, connectItemsButton, deleteConnectionsButton;
-var mapOfItems, mapOfConnections;
+var mapOfItems;
 var radioButtonsVisibility, checkboxesVisibility;
 var numberOfRadioButtonSelected;
-var arrayOfCheckboxesSelected;
+var arrayOfCheckboxesSelected, arrayOfWeights;
+var weightOfConnectionInput;
 
 //some properties concerning every circle
 const radius = 16;
@@ -25,9 +26,9 @@ function init () {
 
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
+    arrayOfWeights = [];
     
     mapOfItems = new Map();
-    mapOfConnections = new Map();
 
 
     //source for the following: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
@@ -83,6 +84,7 @@ function uncheckRadioAndCheckboxes() {
         document.getElementById("checkbox" + i).style.visibility = "hidden";
         document.getElementById("checkbox" + i).checked = false;
         document.getElementById("radioButton" + i).style.visibility = "visible";
+        document.getElementById("weightOfConnection" + i).style.visibility = "hidden"
     }
     connectItemsButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
@@ -97,6 +99,7 @@ function setupConnection(idOfRadioButton) {
         }
         document.getElementById("radioButton" + i).style.visibility = "hidden";
         document.getElementById("checkbox" + i).style.visibility = "visible";
+        document.getElementById("weightOfConnection" + i).style.visibility = "visible";
     }
     connectItemsButton.style.visibility = "visible";
     deleteConnectionsButton.style.visibility = "visible";
@@ -108,10 +111,12 @@ function setConnection() {
         if (document.getElementById("checkbox" + i).checked == true) {
             arrayOfCheckboxesSelected.push(i);
             document.getElementById("checkbox" + i).checked = false;
+            arrayOfWeights.push(parseInt(document.getElementById("weightOfConnection" + i).value));
         }
         document.getElementById("checkbox" + i).style.visibility = "hidden";
         document.getElementById("radioButton" + i).style.visibility = "visible";
         document.getElementById("radioButton" + i).checked = false;
+        document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
     }
 
     if (numberOfRadioButtonSelected == -1 || arrayOfCheckboxesSelected.length == 0) {
@@ -121,26 +126,40 @@ function setConnection() {
     connectItemsButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
-    mapOfConnections.set(numberOfRadioButtonSelected, arrayOfCheckboxesSelected);
+    mapOfItems.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
 
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearListOfItems();
 
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 1;
 
     for (i = 0; i < arrayOfCheckboxesSelected.length; i++) {
-        drawArrowBetweenItems(mapOfItems, numberOfRadioButtonSelected, arrayOfCheckboxesSelected[i])
+        drawDirectedConnections(mapOfItems, numberOfRadioButtonSelected, arrayOfCheckboxesSelected[i])
     }
 
+    for (i = 0; i < mapOfItems.size; i++) {
+        drawOneItemOnTheCanvas(i, mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
+    }
 
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
+    arrayOfWeights = [];
 
     //TODO: redraw the canvas
 }
 
 
 function deleteConnectionOfSelectedItem() {
-    mapOfConnections.delete(numberOfRadioButtonSelected);
+    mapOfItems.get(numberOfRadioButtonSelected).connectTo([], []);
+
+    for (i = 0; i < numberOfItem; i++) {
+        document.getElementById("checkbox" + i).style.visibility = "hidden";
+        document.getElementById("radioButton" + i).style.visibility = "visible";
+        document.getElementById("radioButton" + i).checked = false;
+        document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
+    }
 
     connectItemsButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
@@ -150,7 +169,7 @@ function deleteConnectionOfSelectedItem() {
 
 
 function clearEverything() {
-    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
+    clearListOfItems();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     numberOfItem = 0;
 
@@ -164,7 +183,7 @@ function clearEverything() {
 
 
 function deleteItem(clickedId) {
-    document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
+    clearListOfItems();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (i = parseInt(clickedId); i < mapOfItems.size; i++) {

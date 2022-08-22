@@ -44,7 +44,13 @@ canvas {
 }
 
 .radioAndCheckbox {
-	float: right;
+	float: auto;
+	margin: 0%;
+	margin-right: 4px;
+}
+
+.textInput {
+	float: auto;
 	margin: 0%;
 	margin-right: 4px;
 }

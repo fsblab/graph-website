@@ -3,12 +3,14 @@ class NewItem {
         this.idOfItem = idOfItem;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.arrayOfConnections = [];
+        this.arrayOfWeights = [];
     }
 
-    connectTo(arrayOfItems, arrayOfweights) {
-        if (arrayOfItems.length == arrayOfweights.legnth) {
-            this.arrayOfConnections = arrayOfItems;
-            this.arrayOfWeights = arrayOfweights;
+    connectTo(items, weights) {
+        if (items.length == weights.length) {
+            this.arrayOfConnections = items;
+            this.arrayOfWeights = weights;
         }
     }
 }
