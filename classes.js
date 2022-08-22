@@ -4,4 +4,11 @@ class NewItem {
         this.xPos = xPos;
         this.yPos = yPos;
     }
+
+    connectTo(arrayOfItems, arrayOfweights) {
+        if (arrayOfItems.length == arrayOfweights.legnth) {
+            this.arrayOfConnections = arrayOfItems;
+            this.arrayOfWeights = arrayOfweights;
+        }
+    }
 }

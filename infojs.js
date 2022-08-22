@@ -128,10 +128,7 @@ function setConnection() {
     ctx.lineWidth = 1;
 
     for (i = 0; i < arrayOfCheckboxesSelected.length; i++) {
-        ctx.beginPath();
-        ctx.moveTo(mapOfItems.get(numberOfRadioButtonSelected).xPos, mapOfItems.get(numberOfRadioButtonSelected).yPos);
-        ctx.lineTo(mapOfItems.get(arrayOfCheckboxesSelected[i]).xPos, mapOfItems.get(arrayOfCheckboxesSelected[i]).yPos);
-        ctx.stroke();
+        drawArrowBetweenItems(mapOfItems, numberOfRadioButtonSelected, arrayOfCheckboxesSelected[i])
     }
 
 
