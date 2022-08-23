@@ -13,7 +13,9 @@ function drawOneItemOnTheCanvas(numberOfItem, xPos, yPos) {
 }
 
 
-function drawDirectedConnections(mapOfItems, radioButton, checkbox) {
+function drawDirectedConnections(radioButton, checkbox) {
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(mapOfItems.get(radioButton).xPos, mapOfItems.get(radioButton).yPos);
     ctx.lineTo(mapOfItems.get(checkbox).xPos, mapOfItems.get(checkbox).yPos);
@@ -23,4 +25,27 @@ function drawDirectedConnections(mapOfItems, radioButton, checkbox) {
 
 function clearListOfItems() {
     document.getElementById("listOfItems").innerHTML = "<b>List of Items:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
+}
+
+
+function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearListOfItems();
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+
+    for (i = 0; i < mapOfItems.size; i++) {
+        for (j = 0; j < mapOfItems.get(i).arrayOfConnections.length; j++) {
+            ctx.beginPath();
+            ctx.moveTo(mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
+            ctx.lineTo(mapOfItems.get(mapOfItems.get(i).arrayOfConnections[j]).xPos, mapOfItems.get(mapOfItems.get(i).arrayOfConnections[j]).yPos);
+            ctx.stroke();
+        }
+    }
+
+
+    for (i = 0; i < mapOfItems.size; i++) {
+        drawOneItemOnTheCanvas(i, mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
+    }
 }

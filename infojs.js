@@ -128,26 +128,11 @@ function setConnection() {
 
     mapOfItems.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
 
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    clearListOfItems();
-
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-
-    for (i = 0; i < arrayOfCheckboxesSelected.length; i++) {
-        drawDirectedConnections(mapOfItems, numberOfRadioButtonSelected, arrayOfCheckboxesSelected[i])
-    }
-
-    for (i = 0; i < mapOfItems.size; i++) {
-        drawOneItemOnTheCanvas(i, mapOfItems.get(i).xPos, mapOfItems.get(i).yPos);
-    }
-
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
     arrayOfWeights = [];
 
-    //TODO: redraw the canvas
+    redrawCanvas();
 }
 
 
@@ -164,7 +149,7 @@ function deleteConnectionOfSelectedItem() {
     connectItemsButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
-    //TODO: redraw the canvas
+    redrawCanvas();
 }
 
 
