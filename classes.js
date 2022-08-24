@@ -1,15 +1,15 @@
-class NewItem {
-    constructor(idOfItem, xPos, yPos) {
-        this.idOfItem = idOfItem;
+class NewNode {
+    constructor(idOfNodes, xPos, yPos) {
+        this.idOfNodes = idOfNodes;
         this.xPos = xPos;
         this.yPos = yPos;
         this.arrayOfConnections = [];
         this.arrayOfWeights = [];
     }
 
-    connectTo(items, weights) {
-        if (items.length == weights.length) {
-            this.arrayOfConnections = items;
+    connectTo(nodes, weights) {
+        if (nodes.length == weights.length) {
+            this.arrayOfConnections = nodes;
             this.arrayOfWeights = weights;
         }
     }

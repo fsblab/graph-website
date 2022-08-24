@@ -12,24 +12,24 @@
 	<body>
 
 		<div>
-			<input onclick="setCursorToNormal()" type="image" name="select" src="assets/select.png" alt="select">
-			<input onclick="setCursorToCrosshair()" type="image" name="newItem" src= "assets/newItem.png" alt="newItem">
-			<input onclick="clearEverything()" type="image" name="newItem" src= "assets/clear.png" alt="newItem">
+			<input onclick="setCursorToNormal()" type="image" src="assets/select.png">
+			<input onclick="setCursorToCrosshair()" type="image" src= "assets/newNode.png">
+			<input onclick="clearEverything()" type="image" src= "assets/clear.png">
 		</div>
 
-		<canvas id="pinBoard" onclick="setNewItem(event)">
+		<canvas id="pinBoard" onclick="setNewNode(event)">
 		</canvas>
 
 		
-		<div id="itemdiv">
-			<div class="items" id="listOfItems">
-				<b>List of Items:</b>
+		<div id="nodediv">
+			<div class="nodes" id="listOfNodes">
+				<b>List of Nodes:</b>
 				<input id="unchechRadioAndCheckboxes" class="radioAndCheckbox" type="radio" onclick="uncheckRadioAndCheckboxes()" name="radioButton">
 				<br>
 			</div>
 
-			<input id="deleteConnectionsButton" onclick="deleteConnectionOfSelectedItem()" type="image" name="newItem" src= "assets/deleteConnection.png" alt="newItem">
-			<input id="connectButton" onclick="setConnection()" type="image" name="newItem" src= "assets/connect.png" alt="newItem">
+			<input id="deleteConnectionsButton" onclick="deleteConnectionOfSelectedNode()" type="image" src= "assets/deleteConnection.png">
+			<input id="connectButton" onclick="setConnection()" type="image" src= "assets/connect.png">
 		</div>
 
 	</body>

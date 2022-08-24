@@ -25,13 +25,13 @@ canvas {
 	margin-bottom: 10px;
 }
 
-.items {
+.nodes {
 	background: white;
 	font-size: 14pt;
 	min-width: 10%;
 }
 
-#listOfItems {
+#listOfNodes {
 	margin-right: 10px;
 }
 
@@ -60,7 +60,7 @@ canvas {
 	float: right;
 }
 
-#itemdiv {
+#nodediv {
 	float: right;
 	min-width: 10%;
 }
