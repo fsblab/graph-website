@@ -51,8 +51,6 @@ function init () {
 
     //this has to come afterwards all that code above. If it comes before it will have no effect
     ctx.font = "16px Arial";
-
-    drawTestcase();
 }
 
 
@@ -87,7 +85,7 @@ function uncheckRadioAndCheckboxes() {
         document.getElementById("checkbox" + i).style.visibility = "hidden";
         document.getElementById("checkbox" + i).checked = false;
         document.getElementById("radioButton" + i).style.visibility = "visible";
-        document.getElementById("weightOfConnection" + i).style.visibility = "hidden"
+        document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
     }
     connectNodesButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
@@ -160,8 +158,12 @@ function clearEverything() {
     clearListOfNodes();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     numberOfNode = 0;
-
+    /*
     for (i = 0; i < mapOfNodes.size; i++) {
+        mapOfNodes.delete(i);
+    }*/
+
+    for (i = mapOfNodes.size - 1; i >= 0; i--) {
         mapOfNodes.delete(i);
     }
 
@@ -170,11 +172,11 @@ function clearEverything() {
 }
 
 
-function deleteNode(clickedId) {
+function deleteNode(selectedId) {
     clearListOfNodes();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (i = parseInt(clickedId); i < mapOfNodes.size; i++) {
+    for (i = parseInt(selectedId); i < mapOfNodes.size; i++) {
         mapOfNodes.delete(i);
         mapOfNodes.set(i, mapOfNodes.get(i + 1));
     }
@@ -183,8 +185,24 @@ function deleteNode(clickedId) {
     numberOfNode--;
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+        if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
+            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                
+                if (mapOfNodes.get(i).arrayOfConnections[j] == selectedId) {
+                    mapOfNodes.get(i).arrayOfConnections.splice(j, 1);
+                    if (j < mapOfNodes.get(i).arrayOfConnections.length) {
+                        mapOfNodes.get(i).arrayOfConnections[j]--;
+                    }
+                }
+                else if (mapOfNodes.get(i).arrayOfConnections[j] > selectedId) {
+                    mapOfNodes.get(i).arrayOfConnections[j]--;
+                }
+
+            }
+        }
     }
+
+    redrawCanvas();
 }
 
 

@@ -7,6 +7,7 @@ class NewNode {
         this.arrayOfWeights = [];
     }
 
+    
     connectTo(nodes, weights) {
         if (nodes.length == weights.length) {
             this.arrayOfConnections = nodes;

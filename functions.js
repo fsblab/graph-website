@@ -36,11 +36,25 @@ function redrawCanvas() {
     ctx.lineWidth = 1;
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
-            ctx.beginPath();
-            ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
-            ctx.lineTo(mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos, mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos);
-            ctx.stroke();
+
+        if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
+            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
+                toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos + determinePos(i, j, "y");
+
+                angle = Math.atan2(toy - mapOfNodes.get(i).yPos, tox - mapOfNodes.get(i).xPos);
+
+                ctx.beginPath();
+                ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+                ctx.lineTo(tox, toy);
+                ctx.stroke();
+
+                ctx.lineTo(tox - radius * Math.cos(angle - Math.PI / 6), toy - radius * Math.sin(angle - Math.PI / 6));
+                ctx.stroke();
+                ctx.moveTo(tox, toy);
+                ctx.lineTo(tox - radius * Math.cos(angle + Math.PI / 6), toy - radius * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+            }
         }
     }
 
@@ -51,28 +65,52 @@ function redrawCanvas() {
 }
 
 
+function determinePos(outerIterator, innerIterator, xy) {
+    var dx, dy, dxpos, dypos, angle;
+
+    dx = mapOfNodes.get(outerIterator).xPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).xPos;
+    dy = mapOfNodes.get(outerIterator).yPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).yPos;
+
+    angle = Math.atan2(dy, dx);
+
+    if (xy == "x") {
+        dxpos = Math.cos(angle) * (radius);
+        return dxpos;
+    }
+    else if (xy == "y") {
+        dypos = Math.sin(angle) * (radius);
+        return dypos;
+    }
+    else {
+    return;
+    }
+}
+
+
 function drawTestcase() {
-    mapOfNodes.set(0, new NewNode(0, 400, 400));
-    mapOfNodes.set(1, new NewNode(1, 600, 400));
-    mapOfNodes.set(2, new NewNode(2, 500, 300));
-    mapOfNodes.set(3, new NewNode(3, 400, 200));
-    mapOfNodes.set(4, new NewNode(4, 300, 300));
-    mapOfNodes.set(5, new NewNode(5, 200, 400));
-    mapOfNodes.set(6, new NewNode(6, 300, 500));
-    mapOfNodes.set(7, new NewNode(7, 400, 600));
-    mapOfNodes.set(8, new NewNode(8, 500, 500));
+    var x, y;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
+    mapOfNodes.set(0, new NewNode(0, x, y));
+    iterator = 1;
+
+    for (i = 0; i <= 2 * Math.PI; i += Math.PI / 8) {
+        mapOfNodes.set(iterator, new NewNode(iterator, x + (Math.cos(i) * (x / y) * 200), y + (Math.sin(i) * (x / y) * 200)));
+        iterator++;
+    }
 
     for (i = 0; i < mapOfNodes.size; i++) {
         drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
-        document.getElementById("checkbox" + i).checked = true;
     }
 
     document.getElementById("radioButton" + 0).checked = true;
-    setupConnection(0);
 
-    for (i = 0; i < mapOfNodes.size; i++) {
+    
+    for (i = 1; i < mapOfNodes.size; i++) {
         document.getElementById("checkbox" + i).checked = true;
-    }
+    }    
 
-    numberOfNode = 9;
+    numberOfNode = iterator;
+
+    setupConnection("radioButton0");
 }
