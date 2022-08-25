@@ -7,7 +7,7 @@ function drawOneNodeOnTheCanvas(numberOfNode, xPos, yPos) {
     ctx.textAlign = "center";
     ctx.fillText(numberOfNode.toString(), xPos, yPos + 6);
     
-    document.getElementById("listOfNodes").innerHTML += "<br>" + numberOfNode + "&emsp;" + "<input id=numberOfNode class=\"deleteButton\" onclick=\"deleteNode(this.id)\" type=\"image\" src=\"assets/del.png\">".replace("numberOfNode", numberOfNode) + "<input id=\"w\" type=\"text\" class=\"textInput\" value=\"0\">".replace("w", "weightOfConnection" + numberOfNode) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + numberOfNode) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\">".replace("r", "radioButton" + numberOfNode);
+    document.getElementById("listOfNodes").innerHTML += "<br>" + numberOfNode + "&emsp;" + "<input id=numberOfNode class=\"deleteButton\" onclick=\"deleteNode(this.id)\" type=\"image\" src=\"assets/del.png\">".replace("numberOfNode", numberOfNode) + "<input id=\"w\" type=\"text\" class=\"textInput\" value=\"0\">".replace("w", "weightOfConnection" + numberOfNode) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + numberOfNode) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\" name=\"radioButton\">".replace("r", "radioButton" + numberOfNode);
     document.getElementById("checkbox" + numberOfNode).style.visibility = "hidden";
     document.getElementById("weightOfConnection" + numberOfNode).style.visibility = "hidden";
 }
@@ -88,6 +88,9 @@ function determinePos(outerIterator, innerIterator, xy) {
 
 
 function drawTestcase() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearListOfNodes();
+
     var x, y;
     x = canvas.width / 2;
     y = canvas.height / 2;
@@ -108,7 +111,11 @@ function drawTestcase() {
     
     for (i = 1; i < mapOfNodes.size; i++) {
         document.getElementById("checkbox" + i).checked = true;
-    }    
+        document.getElementById("weightOfConnection" + i).value = i;
+        mapOfNodes.get(i).connectTo([i + 1], [i]);
+    }
+
+    mapOfNodes.get(16).connectTo([1], [0]);
 
     numberOfNode = iterator;
 
