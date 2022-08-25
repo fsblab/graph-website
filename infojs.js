@@ -92,16 +92,25 @@ function uncheckRadioAndCheckboxes() {
 }
 
 
-function setupConnection(idOfRadioButton) {
+function setupConnection(selectedID) {
     for (i = 0; i < numberOfNode; i++) {
-        if (i == parseInt(idOfRadioButton.replace("radioButton", ""))) {
+        if (i == parseInt(selectedID.replace("radioButton", ""))) {
             numberOfRadioButtonSelected = i;
             continue;
         }
+
         document.getElementById("radioButton" + i).style.visibility = "hidden";
         document.getElementById("checkbox" + i).style.visibility = "visible";
         document.getElementById("weightOfConnection" + i).style.visibility = "visible";
     }
+
+    if (mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights.length > 0)  {
+        for (i = 0; i < mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights.length; i++) {
+            num = mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections[i];
+            document.getElementById("weightOfConnection" + num).value = mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights[i];
+        }
+    }
+
     connectNodesButton.style.visibility = "visible";
     deleteConnectionsButton.style.visibility = "visible";
 }
@@ -158,7 +167,8 @@ function clearEverything() {
     clearListOfNodes();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     numberOfNode = 0;
-    /*
+
+    /* why the fuck does this not work?
     for (i = 0; i < mapOfNodes.size; i++) {
         mapOfNodes.delete(i);
     }*/
