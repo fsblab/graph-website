@@ -91,9 +91,12 @@ function drawTestcase() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     clearListOfNodes();
 
-    var x, y;
+    var x, y, zeroNodeConnections;
     x = canvas.width / 2;
     y = canvas.height / 2;
+
+    zeroNodeConnections = [];
+
     mapOfNodes.set(0, new NewNode(0, x, y));
     iterator = 1;
 
@@ -111,10 +114,11 @@ function drawTestcase() {
     
     for (i = 1; i < mapOfNodes.size; i++) {
         document.getElementById("checkbox" + i).checked = true;
-        document.getElementById("weightOfConnection" + i).value = i;
+        zeroNodeConnections.push(i);
         mapOfNodes.get(i).connectTo([i + 1], [i]);
     }
 
+    mapOfNodes.get(0).connectTo(zeroNodeConnections, zeroNodeConnections);
     mapOfNodes.get(16).connectTo([1], [0]);
 
     numberOfNode = iterator;

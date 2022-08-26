@@ -104,12 +104,18 @@ function setupConnection(selectedID) {
         document.getElementById("weightOfConnection" + i).style.visibility = "visible";
     }
 
+    for (i = 0; i < mapOfNodes.size; i++) {
+        document.getElementById("weightOfConnection" + i).value = 0;
+    }
+
     if (mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights.length > 0)  {
         for (i = 0; i < mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights.length; i++) {
             num = mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections[i];
             document.getElementById("weightOfConnection" + num).value = mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights[i];
+            document.getElementById("checkbox" + num).checked = true;
         }
     }
+
 
     connectNodesButton.style.visibility = "visible";
     deleteConnectionsButton.style.visibility = "visible";
