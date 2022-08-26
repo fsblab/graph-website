@@ -13,30 +13,25 @@ function drawOneNodeOnTheCanvas(numberOfNode, xPos, yPos) {
 }
 
 
-function drawDirectedConnections(radioButton, checkbox) {
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(mapOfNodes.get(radioButton).xPos, mapOfNodes.get(radioButton).yPos);
-    ctx.lineTo(mapOfNodes.get(checkbox).xPos, mapOfNodes.get(checkbox).yPos);
-    ctx.stroke();
-}
-
-
-function clearListOfNodes() {
-    document.getElementById("listOfNodes").innerHTML = "<b>List of Nodes:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
-}
-
-
-function redrawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    clearListOfNodes();
-
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-
+function drawConnections() {
     for (i = 0; i < mapOfNodes.size; i++) {
+        if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
+            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos;
+                toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos;
 
+                ctx.beginPath();
+                ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+                ctx.lineTo(tox, toy);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+
+function drawDirectedConnections() {
+    for (i = 0; i < mapOfNodes.size; i++) {
         if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
             for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
                 tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
@@ -57,7 +52,27 @@ function redrawCanvas() {
             }
         }
     }
+}
 
+
+function clearListOfNodes() {
+    document.getElementById("listOfNodes").innerHTML = "<b>List of Nodes:</b><input id=\"unchechRadioAndCheckboxes\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"uncheckRadioAndCheckboxes()\" name=\"radioButton\"><br>";
+}
+
+
+function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearListOfNodes();
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+
+    if (typeOfGraph == "connect") {
+        drawConnections();
+    }
+    if (typeOfGraph == "directed") {
+        drawDirectedConnections();
+    }
 
     for (i = 0; i < mapOfNodes.size; i++) {
         drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
@@ -82,7 +97,7 @@ function determinePos(outerIterator, innerIterator, xy) {
         return dypos;
     }
     else {
-    return;
+        return;
     }
 }
 
@@ -122,6 +137,8 @@ function drawTestcase() {
     mapOfNodes.get(16).connectTo([1], [0]);
 
     numberOfNode = iterator;
+
+    typeOfGraph = "none";
 
     setupConnection("radioButton0");
 }

@@ -1,4 +1,5 @@
 let canvas, ctx;
+var typeOfGraph;
 var newNodeIsSettable;
 var setNodesButton, connectNodesButton, deleteConnectionsButton;
 var mapOfNodes;
@@ -21,6 +22,9 @@ function init () {
     connectNodesButton = document.getElementById("connectButton");
     connectNodesButton.style.visibility = "hidden";
 
+    directedConnectNodesBNutton = document.getElementById("directedConnectButton");
+    directedConnectNodesBNutton.style.visibility = "hidden";
+
     deleteConnectionsButton = document.getElementById("deleteConnectionsButton");
     deleteConnectionsButton.style.visibility = "hidden";
 
@@ -28,6 +32,8 @@ function init () {
     numberOfNode = 0;
     arrayOfCheckboxesSelected = [];
     arrayOfWeights = [];
+
+    typeOfGraph = "none";
     
     mapOfNodes = new Map();
 
@@ -87,7 +93,9 @@ function uncheckRadioAndCheckboxes() {
         document.getElementById("radioButton" + i).style.visibility = "visible";
         document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
     }
+
     connectNodesButton.style.visibility = "hidden";
+    directedConnectNodesBNutton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 }
 
@@ -116,13 +124,32 @@ function setupConnection(selectedID) {
         }
     }
 
-
-    connectNodesButton.style.visibility = "visible";
-    deleteConnectionsButton.style.visibility = "visible";
+    if (typeOfGraph == "none") {
+        connectNodesButton.style.visibility = "visible";
+        directedConnectNodesBNutton.style.visibility = "visible";
+        deleteConnectionsButton.style.visibility = "visible";
+    }
+    else if (typeOfGraph == "connect") {
+        connectNodesButton.style.visibility = "visible";
+        directedConnectNodesBNutton.style.visibility = "hidden";
+        deleteConnectionsButton.style.visibility = "visible";
+    }
+    else {
+        connectNodesButton.style.visibility = "hidden";
+        directedConnectNodesBNutton.style.visibility = "visible";
+        deleteConnectionsButton.style.visibility = "visible";
+    }
 }
 
 
-function setConnection() {
+function setConnection(selectedButton) {
+    if (selectedButton == "connectButton") {
+        typeOfGraph = "connect";
+    }
+    else {
+        typeOfGraph = "directed";
+    }
+    
     for (i = 0; i < numberOfNode; i++) {
         if (document.getElementById("checkbox" + i).checked == true) {
             arrayOfCheckboxesSelected.push(i);
@@ -140,9 +167,19 @@ function setConnection() {
     }
 
     connectNodesButton.style.visibility = "hidden";
+    directedConnectNodesBNutton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
-    mapOfNodes.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
+    if (typeOfGraph == "connect") {
+        mapOfNodes.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
+
+        for (i = 0; i < mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections.length; i++) {
+            mapOfNodes.get(mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections[i]).connectTo([numberOfRadioButtonSelected], [mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights[i]])
+        }
+    }
+    else if (typeOfGraph == "directed") {
+        mapOfNodes.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
+    }
 
     numberOfRadioButtonSelected = -1;
     arrayOfCheckboxesSelected = [];
@@ -155,6 +192,17 @@ function setConnection() {
 function deleteConnectionOfSelectedNode() {
     mapOfNodes.get(numberOfRadioButtonSelected).connectTo([], []);
 
+    if (typeOfGraph == "connect") {
+        for (i = 0; i < mapOfNodes.size; i++) {
+            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                if (mapOfNodes.get(i).arrayOfConnections[j] == numberOfRadioButtonSelected) {
+                    mapOfNodes.get(i).arrayOfConnections.splice(j, 1);
+                    mapOfNodes.get(i).arrayOfWeights.splice(j, 1);
+                }
+            }
+        }
+    }
+
     for (i = 0; i < numberOfNode; i++) {
         document.getElementById("checkbox" + i).style.visibility = "hidden";
         document.getElementById("radioButton" + i).style.visibility = "visible";
@@ -163,6 +211,7 @@ function deleteConnectionOfSelectedNode() {
     }
 
     connectNodesButton.style.visibility = "hidden";
+    directedConnectNodesBNutton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
     redrawCanvas();
@@ -184,7 +233,10 @@ function clearEverything() {
     }
 
     connectNodesButton.style.visibility = "hidden";
+    directedConnectNodesBNutton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
+
+    typeOfGraph = "none";
 }
 
 
@@ -206,6 +258,7 @@ function deleteNode(selectedId) {
                 
                 if (mapOfNodes.get(i).arrayOfConnections[j] == selectedId) {
                     mapOfNodes.get(i).arrayOfConnections.splice(j, 1);
+                    mapOfNodes.get(i).arrayOfWeights.splice(j, 1);
                     if (j < mapOfNodes.get(i).arrayOfConnections.length) {
                         mapOfNodes.get(i).arrayOfConnections[j]--;
                     }

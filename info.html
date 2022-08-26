@@ -18,6 +18,7 @@
 			<input onclick="drawTestcase()" type="image" src= "assets/test.png">
 		</div>
 
+		
 		<canvas id="pinBoard" onclick="setNewNode(event)">
 		</canvas>
 
@@ -29,8 +30,28 @@
 				<br>
 			</div>
 
-			<input id="deleteConnectionsButton" onclick="deleteConnectionOfSelectedNode()" type="image" src= "assets/deleteConnection.png">
-			<input id="connectButton" onclick="setConnection()" type="image" src= "assets/connect.png">
+			<input id="deleteConnectionsButton" class="connectionButtons" onclick="deleteConnectionOfSelectedNode()" type="image" src= "assets/deleteConnection.png">
+			<input id="connectButton" class="connectionButtons" onclick="setConnection(this.id)" type="image" src= "assets/connect.png">
+			<input id="directedConnectButton" class="connectionButtons" onclick="setConnection(this.id)" type="image" src= "assets/directedConnect.png">
+		</div>
+
+
+		<div id="computations">
+			<select id="listOfcomputations" class="comp">
+				<option id="sp" value="shortestPath">Shortest Path</option>
+				<option id="tsp" value="tsp">Travelling Salesman</option>
+				<option id="mst" value="mst">Minimal Spanning Tree</option>
+			</select>
+
+			<label class="compLabel">FROM</label>
+			<input id="fromNode" class="comp" type="text" value="0">
+
+			<label class="compLabel">TO</label>
+			<input id="toNode" class="comp" type="text" value="1">
+
+			<input type="color" id="colour" class="comp" value="#00AA00">
+
+			<button id="computeButton" class="comp" type="button">Compute</button>
 		</div>
 
 	</body>
