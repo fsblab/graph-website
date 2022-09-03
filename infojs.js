@@ -174,7 +174,37 @@ function setConnection(selectedButton) {
         mapOfNodes.get(numberOfRadioButtonSelected).connectTo(arrayOfCheckboxesSelected, arrayOfWeights);
 
         for (i = 0; i < mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections.length; i++) {
-            mapOfNodes.get(mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections[i]).connectTo([numberOfRadioButtonSelected], [mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights[i]])
+            otherNode = mapOfNodes.get(mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections[i]);
+            
+            if (!(otherNode.arrayOfConnections.includes(numberOfRadioButtonSelected))) {
+                otherNode.connectTo(otherNode.arrayOfConnections.concat([numberOfRadioButtonSelected]), otherNode.arrayOfWeights.concat([mapOfNodes.get(numberOfRadioButtonSelected).arrayOfWeights[i]]));
+            }
+
+            if (!(mapOfNodes.get(numberOfRadioButtonSelected).arrayOfConnections.includes(otherNode.idOfNode)) && otherNode.arrayOfConnections.includes(numberOfRadioButtonSelected)) {
+                indexOfNode = otherNode.arrayOfConnections.indexOf(numberOfRadioButtonSelected);
+                otherNode.arrayOfConnections.splice(indexOfNode, 1);
+                otherNode.arrayOfWeights.splice(indexOfNode, 1);
+            }
+        }
+
+        for (i = 0; i < mapOfNodes.size; i++) {
+            firstNode = mapOfNodes.get(i);
+
+            for (j = i + 1; j < mapOfNodes.size; j++) {
+                secondNode = mapOfNodes.get(j);
+
+                if (firstNode.arrayOfConnections.includes(secondNode.idOfNode) && !(secondNode.arrayOfConnections.includes(firstNode.idOfNode))) {
+                    indexOfNode = firstNode.arrayOfConnections.indexOf(secondNode.idOfNode);
+                    firstNode.arrayOfConnections.splice(indexOfNode, 1);
+                    firstNode.arrayOfWeights.splice(indexOfNode, 1);
+                }
+
+                if (!(firstNode.arrayOfConnections.includes(secondNode.idOfNode)) && secondNode.arrayOfConnections.includes(firstNode.idOfNode)) {
+                    indexOfNode = secondNode.arrayOfConnections.indexOf(firstNode.idOfNode);
+                    secondNode.arrayOfConnections.splice(indexOfNode, 1);
+                    secondNode.arrayOfWeights.splice(indexOfNode, 1);                    
+                }
+            }
         }
     }
     else if (typeOfGraph == "directed") {

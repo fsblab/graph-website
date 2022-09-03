@@ -1,6 +1,6 @@
 class NewNode {
-    constructor(idOfNodes, xPos, yPos) {
-        this.idOfNodes = idOfNodes;
+    constructor(idOfNode, xPos, yPos) {
+        this.idOfNode = idOfNode;
         this.xPos = xPos;
         this.yPos = yPos;
         this.arrayOfConnections = [];
