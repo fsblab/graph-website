@@ -1,10 +1,8 @@
 function sendGraphToBackend() {
     var resultingMap = new Map();
-    var from = document.getElementById("fromNode").value;
-    var to = document.getElementById("toNode").value;
 
     if (typeOfGraph == "none") {
-        alert("Graph too small");
+        alert("Graph needs at least one edge");
         return;
     }
 
@@ -19,7 +17,7 @@ function sendGraphToBackend() {
             alert("FROM parameter to large");
             return;
         }
-
+    
         if (parseInt(to) > numberOfNode) {
             alert("TO parameter too large");
             return;
@@ -63,10 +61,10 @@ function sendGraphToBackend() {
         clearListOfNodes();
 
         if (typeOfGraph == "connect") {
-            drawConnections(resultingMap, document.getElementById("colour").value, 2);
+            drawConnections(xhr.response);
         }
         if (typeOfGraph == "directed") {
-            drawDirectedConnections(resultingMap, document.getElementById("colour").value, 2);
+            drawDirectedConnections(resultingMap);
         }
 
         for (i = 0; i < mapOfNodes.size; i++) {
