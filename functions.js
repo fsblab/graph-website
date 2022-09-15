@@ -1,7 +1,8 @@
-function drawOneNodeOnTheCanvas(numberOfNode, xPos, yPos) {
+function drawOneNodeOnTheCanvas(numberOfNode, xPos, yPos, colour) {
     ctx.beginPath();
     ctx.arc(xPos, yPos, radius, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = colour;
+    ctx.strokeStyle = colour;
     ctx.fill();
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
@@ -13,7 +14,11 @@ function drawOneNodeOnTheCanvas(numberOfNode, xPos, yPos) {
 }
 
 
-function drawConnections() {
+function drawConnections(mapOfNodes, colour, lineWidth) {
+    ctx.fillStyle = colour;
+    ctx.strokeStyle = colour;
+    ctx.lineWidth = lineWidth;
+
     for (i = 0; i < mapOfNodes.size; i++) {
         if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
             for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
@@ -30,7 +35,11 @@ function drawConnections() {
 }
 
 
-function drawDirectedConnections() {
+function drawDirectedConnections(mapOfNodes, colour, lineWidth) {
+    ctx.fillStyle = colour;
+    ctx.strokeStyle = colour;
+    ctx.lineWidth = lineWidth;
+    
     for (i = 0; i < mapOfNodes.size; i++) {
         if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
             for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
@@ -60,22 +69,19 @@ function clearListOfNodes() {
 }
 
 
-function redrawCanvas() {
+function redrawCanvas(mapOfNodes) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     clearListOfNodes();
 
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-
     if (typeOfGraph == "connect") {
-        drawConnections();
+        drawConnections(mapOfNodes, "black", 1);
     }
     if (typeOfGraph == "directed") {
-        drawDirectedConnections();
+        drawDirectedConnections(mapOfNodes, "black", 1);
     }
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+        drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos, "black");
     }
 }
 
@@ -121,7 +127,7 @@ function drawTestcase() {
     }
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+        drawOneNodeOnTheCanvas(i, mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos, "black");
     }
 
     document.getElementById("radioButton" + 0).checked = true;

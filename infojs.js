@@ -22,8 +22,8 @@ function init () {
     connectNodesButton = document.getElementById("connectButton");
     connectNodesButton.style.visibility = "hidden";
 
-    directedConnectNodesBNutton = document.getElementById("directedConnectButton");
-    directedConnectNodesBNutton.style.visibility = "hidden";
+    directedConnectNodesButton = document.getElementById("directedConnectButton");
+    directedConnectNodesButton.style.visibility = "hidden";
 
     deleteConnectionsButton = document.getElementById("deleteConnectionsButton");
     deleteConnectionsButton.style.visibility = "hidden";
@@ -78,7 +78,7 @@ function setNewNode(e) {
     yPosition = (e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
 
     if (newNodeIsSettable) {
-        drawOneNodeOnTheCanvas(numberOfNode, xPosition, yPosition);
+        drawOneNodeOnTheCanvas(numberOfNode, xPosition, yPosition, "black");
 
         mapOfNodes.set(numberOfNode, new NewNode(numberOfNode, xPosition, yPosition));
         numberOfNode++;
@@ -95,7 +95,7 @@ function uncheckRadioAndCheckboxes() {
     }
 
     connectNodesButton.style.visibility = "hidden";
-    directedConnectNodesBNutton.style.visibility = "hidden";
+    directedConnectNodesButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 }
 
@@ -126,17 +126,17 @@ function setupConnection(selectedID) {
 
     if (typeOfGraph == "none") {
         connectNodesButton.style.visibility = "visible";
-        directedConnectNodesBNutton.style.visibility = "visible";
+        directedConnectNodesButton.style.visibility = "visible";
         deleteConnectionsButton.style.visibility = "visible";
     }
     else if (typeOfGraph == "connect") {
         connectNodesButton.style.visibility = "visible";
-        directedConnectNodesBNutton.style.visibility = "hidden";
+        directedConnectNodesButton.style.visibility = "hidden";
         deleteConnectionsButton.style.visibility = "visible";
     }
     else {
         connectNodesButton.style.visibility = "hidden";
-        directedConnectNodesBNutton.style.visibility = "visible";
+        directedConnectNodesButton.style.visibility = "visible";
         deleteConnectionsButton.style.visibility = "visible";
     }
 }
@@ -167,7 +167,7 @@ function setConnection(selectedButton) {
     }
 
     connectNodesButton.style.visibility = "hidden";
-    directedConnectNodesBNutton.style.visibility = "hidden";
+    directedConnectNodesButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
     if (typeOfGraph == "connect") {
@@ -215,7 +215,7 @@ function setConnection(selectedButton) {
     arrayOfCheckboxesSelected = [];
     arrayOfWeights = [];
 
-    redrawCanvas();
+    redrawCanvas(mapOfNodes);
 }
 
 
@@ -241,10 +241,10 @@ function deleteConnectionOfSelectedNode() {
     }
 
     connectNodesButton.style.visibility = "hidden";
-    directedConnectNodesBNutton.style.visibility = "hidden";
+    directedConnectNodesButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
-    redrawCanvas();
+    redrawCanvas(mapOfNodes);
 }
 
 
@@ -263,7 +263,7 @@ function clearEverything() {
     }
 
     connectNodesButton.style.visibility = "hidden";
-    directedConnectNodesBNutton.style.visibility = "hidden";
+    directedConnectNodesButton.style.visibility = "hidden";
     deleteConnectionsButton.style.visibility = "hidden";
 
     typeOfGraph = "none";
@@ -301,7 +301,7 @@ function deleteNode(selectedId) {
         }
     }
 
-    redrawCanvas();
+    redrawCanvas(mapOfNodes);
 }
 
 
