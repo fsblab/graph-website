@@ -12,7 +12,7 @@ function sendGraphToBackend() {
     xhr.responseType = "json";
 
     // open a POST request
-    if (document.getElementById("listOfcomputations").value == "sp") {
+    if (document.getElementById("listOfComputations").value == "sp") {
         if (parseInt(from) > numberOfNode) {
             alert("FROM parameter to large");
             return;
@@ -29,9 +29,9 @@ function sendGraphToBackend() {
         }
 
         xhr.open("POST", URL + "sp" + "/" + from + "/" + to);
-    } else if (document.getElementById("listOfcomputations").value == "tsp") {
+    } else if (document.getElementById("listOfComputations").value == "tsp") {
         xhr.open("POST", URL + "tsp");
-    } else if (document.getElementById("listOfcomputations").value == "mst") {
+    } else if (document.getElementById("listOfComputations").value == "mst") {
         if (typeOfGraph == "directed") {
             return;
         }
@@ -61,10 +61,10 @@ function sendGraphToBackend() {
         clearListOfNodes();
 
         if (typeOfGraph == "connect") {
-            drawConnections(xhr.response);
+            drawConnections(resultingMap, document.getElementById("colour").value, 2);
         }
         if (typeOfGraph == "directed") {
-            drawDirectedConnections(resultingMap);
+            drawDirectedConnections(resultingMap, document.getElementById("colour").value, 2);
         }
 
         for (i = 0; i < mapOfNodes.size; i++) {
