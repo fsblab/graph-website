@@ -1,0 +1,82 @@
+html {
+   margin: 0px;
+   height: 100%;
+   width: 100%;
+}
+
+body {
+	background: grey;
+	margin: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+input {
+	margin: 10px;
+}
+
+canvas {
+	background: white;
+	float: left;
+	height: 88%;
+	width: 80%;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.nodes {
+	background: white;
+	font-size: 14pt;
+	min-width: 10%;
+}
+
+#listOfNodes {
+	margin-right: 10px;
+}
+
+.deleteButton {
+	margin: 0%;
+	margin-left: 4px;
+	margin-right: 4px;
+	padding-top: 6px;
+	float: left;
+}
+
+.connectionButtons {
+	margin-left: 9%;
+	margin-right: 9%;
+}
+
+.radioAndCheckbox {
+	float: auto;
+	margin: 0%;
+	margin-right: 4px;
+}
+
+.textInput {
+	float: auto;
+	margin: 0%;
+	margin-right: 4px;
+}
+
+#nodediv {
+	float: right;
+	min-width: 10%;
+}
+
+#computations {
+	clear: both;
+	margin: 0%;
+	margin-left: 10px;
+	width: fit-content;
+}
+
+.compLabel {
+	color: white;
+	font-weight: bold;
+}
+
+.comp {
+	margin: 0%;
+}

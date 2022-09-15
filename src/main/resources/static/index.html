@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="icon" href="assets/favicon.png">
+		<link rel="stylesheet" href="stylesheet.css">
+		<script src="classes.js"></script>
+		<script src="functions.js"></script>
+		<script src="base.js"></script>
+		<script src="backendConnection.js"></script>
+		<title>info</title>
+	</head>
+
+	<body>
+
+		<div>
+			<input onclick="setCursorToNormal()" type="image" src="assets/select.png">
+			<input onclick="setCursorToCrosshair()" type="image" src= "assets/newNode.png">
+			<input onclick="clearEverything()" type="image" src= "assets/clear.png">
+			<input onclick="drawTestcase()" type="image" src= "assets/test.png">
+		</div>
+
+		
+		<canvas id="pinBoard" onclick="setNewNode(event)">
+		</canvas>
+
+		
+		<div id="nodediv">
+			<div class="nodes" id="listOfNodes">
+				<b>List of Nodes:</b>
+				<input id="unchechRadioAndCheckboxes" class="radioAndCheckbox" type="radio" onclick="uncheckRadioAndCheckboxes()" name="radioButton">
+				<br>
+			</div>
+
+			<input id="deleteConnectionsButton" class="connectionButtons" onclick="deleteConnectionOfSelectedNode()" type="image" src= "assets/deleteConnection.png">
+			<input id="connectButton" class="connectionButtons" onclick="setConnection(this.id)" type="image" src= "assets/connect.png">
+			<input id="directedConnectButton" class="connectionButtons" onclick="setConnection(this.id)" type="image" src= "assets/directedConnect.png">
+		</div>
+
+
+		<div id="computations">
+			<select id="listOfcomputations" class="comp">
+				<option id="sp" value="sp">Shortest Path</option>
+				<option id="tsp" value="tsp">Travelling Salesman</option>
+				<option id="mst" value="mst">Minimal Spanning Tree</option>
+			</select>
+
+			<label class="compLabel">FROM</label>
+			<input id="fromNode" class="comp" type="text" value="0">
+
+			<label class="compLabel">TO</label>
+			<input id="toNode" class="comp" type="text" value="1">
+
+			<input type="color" id="colour" class="comp" value="#00AA00">
+
+			<button id="computeButton" class="comp" type="button" onclick="sendGraphToBackend()">Compute</button>
+		</div>
+
+	</body>
+</html>
