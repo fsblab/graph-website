@@ -3,9 +3,9 @@ package com.example.Graph;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -24,14 +24,81 @@ public class GraphController {
                     produces = {"application/json"})
     @ResponseBody
     public HashMap<Integer, NewNode> sp(@RequestBody HashMap<Integer, NewNode> mapOfNodes, @PathVariable("from") int from, @PathVariable("to") int to) {
+        ArrayList<Integer> buffer = new ArrayList<>();
         ArrayList<Integer> Q = new ArrayList<>();
+        ArrayList<Integer> neighbouringNodes = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> shortestPaths = new ArrayList<>();
+        int currentNode = from;
+        int oldSum, newSum;
+
+        HashMap<Integer, NewNode> resultingMap = new HashMap<>();
+
         mapOfNodes.forEach((key, value) -> {Q.add(key);});
+        mapOfNodes.forEach((key, value) -> {shortestPaths.add(new ArrayList<>(List.of(from)));});
+        neighbouringNodes.addAll(mapOfNodes.get(from).getArrayOfConnections());
+        buffer.addAll(mapOfNodes.get(from).getArrayOfConnections());
 
-        System.out.println("Rest call received");
-        System.out.println(from);
-        System.out.println(to);
+        while (!Q.isEmpty()) {
+            for (int i : neighbouringNodes) {
+                oldSum = 0;
+                newSum = 0;
 
-        return mapOfNodes;
+                if (shortestPaths.get(i).size() > 1) {
+                    for (int j = 0; j < shortestPaths.get(i).size() - 1; j++) {
+                        oldSum += mapOfNodes.get(shortestPaths.get(i).get(j)).getArrayOfWeights().get(mapOfNodes.get(shortestPaths.get(i).get(j)).getArrayOfConnections().indexOf(shortestPaths.get(i).get(j + 1)));
+                    }
+                } else {
+                    oldSum = Integer.MAX_VALUE;
+                }
+
+                for (int j = 0; j < shortestPaths.get(currentNode).size() - 1; j++) {
+                    newSum += mapOfNodes.get(shortestPaths.get(currentNode).get(j)).getArrayOfWeights().get(mapOfNodes.get(shortestPaths.get(currentNode).get(j)).getArrayOfConnections().indexOf(shortestPaths.get(currentNode).get(j + 1)));
+                }
+
+                //add the weight from 'currentNode' to 'i' to the sum
+                try {
+                    newSum += mapOfNodes.get(currentNode).getArrayOfWeights().get(mapOfNodes.get(currentNode).getArrayOfConnections().indexOf(i));
+                } catch (Exception e) {
+                    System.out.println("CurrentNode: " + currentNode + ", i: " + i);
+                    System.out.println(e);
+                    newSum = Integer.MAX_VALUE;
+                }
+
+                //if the new connection has a lower total weight, that's the new
+                if (newSum < oldSum) {
+                    //shortestPaths.get(i).forEach((x) -> {shortestPaths.get(i).remove(x);});
+                    shortestPaths.get(i).clear();
+                    shortestPaths.get(i).addAll(shortestPaths.get(currentNode));
+                    shortestPaths.get(i).add(i);
+                }
+            }
+
+            Q.remove((Integer) currentNode);
+
+            for (int i : buffer) {
+                if (Q.contains(i)) {
+                    currentNode = i;
+                } else {
+                    break;
+                }
+            }
+
+            buffer.addAll(mapOfNodes.get(currentNode).getArrayOfConnections());
+            buffer = new ArrayList<>(buffer.stream().distinct().collect(Collectors.toList()));
+
+            neighbouringNodes = new ArrayList<>(mapOfNodes.get(currentNode).getArrayOfConnections());
+        }
+
+        int node;
+        for (int i = 0; i < shortestPaths.get(to).size() - 1; i++) {
+            node = shortestPaths.get(to).get(i);
+            resultingMap.put(node, new NewNode(node, mapOfNodes.get(node).getXPos(), mapOfNodes.get(node).getYPos()));
+            resultingMap.get(node).connectTo(new ArrayList<>(List.of(shortestPaths.get(to).get(i + 1))), new ArrayList<>(List.of(mapOfNodes.get(node).getArrayOfWeights().get(mapOfNodes.get(node).getArrayOfConnections().indexOf(shortestPaths.get(to).get(i + 1))))));
+        }
+
+        resultingMap.put(to, new NewNode(to, mapOfNodes.get(to).getXPos(), mapOfNodes.get(to).getYPos()));
+
+        return resultingMap;
     }
 
 

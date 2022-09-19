@@ -1,12 +1,15 @@
 function sendGraphToBackend() {
     var resultingMap = new Map();
 
+    var from = document.getElementById("fromNode").value;
+    var to = document.getElementById("toNode").value;
+
     if (typeOfGraph == "none") {
         alert("Graph needs at least one edge");
         return;
     }
 
-    var URL = "http://localhost:8080/"
+    var URL = "http://localhost:8080/";
     // create XMLHttpRequest object
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -57,6 +60,13 @@ function sendGraphToBackend() {
             resultingMap.set(i, new NewNode(i, xhr.response[i].xpos, xhr.response[i].ypos));
             resultingMap.get(i).connectTo(xhr.response[i].arrayOfConnections, xhr.response[i].arrayOfWeights);
         }
+
+        if (resultingMap.size == 0) {
+            alert("No solution could be calculated");
+            return;
+        }
+
+        console.log(resultingMap);
 
         clearListOfNodes();
 
