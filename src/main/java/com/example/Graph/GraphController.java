@@ -31,6 +31,8 @@ public class GraphController {
         int currentNode = from;
         int oldSum, newSum;
 
+        boolean somethingWentWrong = false;
+
         HashMap<Integer, NewNode> resultingMap = new HashMap<>();
 
         mapOfNodes.forEach((key, value) -> {Q.add(key);});
@@ -78,9 +80,15 @@ public class GraphController {
             for (int i : buffer) {
                 if (Q.contains(i)) {
                     currentNode = i;
-                } else {
+                    somethingWentWrong = false;
                     break;
+                } else {
+                    somethingWentWrong = true;
                 }
+            }
+
+            if (somethingWentWrong) {
+                break;
             }
 
             buffer.addAll(mapOfNodes.get(currentNode).getArrayOfConnections());
