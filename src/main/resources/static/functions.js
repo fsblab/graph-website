@@ -20,7 +20,7 @@ function drawConnections(mapOfNodes, colour, lineWidth) {
     ctx.lineWidth = lineWidth;
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        try {
+        if (mapOfNodes.has(i)) {
             if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
                 for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
                     tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos;
@@ -32,8 +32,6 @@ function drawConnections(mapOfNodes, colour, lineWidth) {
                     ctx.stroke();
                 }
             }
-        } catch (error) {
-            console.error(error);
         }
     }
 }
@@ -45,7 +43,7 @@ function drawDirectedConnections(mapOfNodes, colour, lineWidth) {
     ctx.lineWidth = lineWidth;
     
     for (i = 0; i < mapOfNodes.size; i++) {
-        try {
+        if (mapOfNodes.has(i)) {
             if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
                 for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
                     tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
@@ -65,8 +63,6 @@ function drawDirectedConnections(mapOfNodes, colour, lineWidth) {
                     ctx.stroke();
                 }
             }
-        } catch (error) {
-            console.error(error);
         }
     }
 }

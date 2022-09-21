@@ -56,19 +56,20 @@ function sendGraphToBackend() {
             return;
         }
 
-        for (var i = 0; i < Object.entries(xhr.response).length; i++) {
-            resultingMap.set(i, new NewNode(i, xhr.response[i].xpos, xhr.response[i].ypos));
-            resultingMap.get(i).connectTo(xhr.response[i].arrayOfConnections, xhr.response[i].arrayOfWeights);
+        //for (var i = 0; i < Object.entries(xhr.response).length; i++) {
+        for (var i = 0; i < numberOfNode; i++) {
+            try {
+                resultingMap.set(i, new NewNode(i, xhr.response[i].xpos, xhr.response[i].ypos));
+                resultingMap.get(i).connectTo(xhr.response[i].arrayOfConnections, xhr.response[i].arrayOfWeights);
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         if (resultingMap.size == 0) {
             alert("No solution could be calculated");
             return;
         }
-
-        console.log(resultingMap);
-
-        clearListOfNodes();
 
         if (typeOfGraph == "connect") {
             drawConnections(resultingMap, document.getElementById("colour").value, 2);
@@ -77,17 +78,17 @@ function sendGraphToBackend() {
             drawDirectedConnections(resultingMap, document.getElementById("colour").value, 2);
         }
 
-        for (i = 0; i < resultingMap.size; i++) {
-            try {
-                drawOneNodeOnTheCanvas(i, resultingMap.get(i).xPos, resultingMap.get(i).yPos, document.getElementById("colour").value);
-            } catch (error) {
-                console.error(error);
+        for (var i = 0; i < resultingMap.size; i++) {
+            if (resultingMap.has (i)) {
+                try {
+                    drawOneNodeOnTheCanvas(i, resultingMap.get(i).xPos, resultingMap.get(i).yPos, document.getElementById("colour").value);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         }
 
         clearListOfNodes();
-
-        numberOfNode = mapOfNodes.size;
 
         for (i = 0; i < numberOfNode; i++) {
             document.getElementById("listOfNodes").innerHTML += "<br>" + i + "&emsp;" + "<input id=numberOfNode class=\"deleteButton\" onclick=\"deleteNode(this.id)\" type=\"image\" src=\"assets/del.png\">".replace("numberOfNode", i) + "<input id=\"w\" type=\"text\" class=\"textInput\" value=\"0\">".replace("w", "weightOfConnection" + i) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + i) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\" name=\"radioButton\">".replace("r", "radioButton" + i);
