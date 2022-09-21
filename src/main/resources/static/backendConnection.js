@@ -77,8 +77,22 @@ function sendGraphToBackend() {
             drawDirectedConnections(resultingMap, document.getElementById("colour").value, 2);
         }
 
-        for (i = 0; i < mapOfNodes.size; i++) {
-            drawOneNodeOnTheCanvas(i, resultingMap.get(i).xPos, resultingMap.get(i).yPos, document.getElementById("colour").value);
+        for (i = 0; i < resultingMap.size; i++) {
+            try {
+                drawOneNodeOnTheCanvas(i, resultingMap.get(i).xPos, resultingMap.get(i).yPos, document.getElementById("colour").value);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        clearListOfNodes();
+
+        numberOfNode = mapOfNodes.size;
+
+        for (i = 0; i < numberOfNode; i++) {
+            document.getElementById("listOfNodes").innerHTML += "<br>" + i + "&emsp;" + "<input id=numberOfNode class=\"deleteButton\" onclick=\"deleteNode(this.id)\" type=\"image\" src=\"assets/del.png\">".replace("numberOfNode", i) + "<input id=\"w\" type=\"text\" class=\"textInput\" value=\"0\">".replace("w", "weightOfConnection" + i) + "<input id=\"c\" class=\"radioAndCheckbox\" type=\"checkbox\">".replace("c", "checkbox" + i) + "<input id=\"r\" class=\"radioAndCheckbox\" type=\"radio\" onclick=\"setupConnection(this.id)\" name=\"radioButton\">".replace("r", "radioButton" + i);
+            document.getElementById("checkbox" + i).style.visibility = "hidden";
+            document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
         }
     }
 }

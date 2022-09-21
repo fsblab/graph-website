@@ -20,16 +20,20 @@ function drawConnections(mapOfNodes, colour, lineWidth) {
     ctx.lineWidth = lineWidth;
 
     for (i = 0; i < mapOfNodes.size; i++) {
-        if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
-            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
-                tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos;
-                toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos;
+        try {
+            if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
+                for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                    tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos;
+                    toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos;
 
-                ctx.beginPath();
-                ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
-                ctx.lineTo(tox, toy);
-                ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+                    ctx.lineTo(tox, toy);
+                    ctx.stroke();
+                }
             }
+        } catch (error) {
+            console.error(error);
         }
     }
 }
@@ -41,24 +45,28 @@ function drawDirectedConnections(mapOfNodes, colour, lineWidth) {
     ctx.lineWidth = lineWidth;
     
     for (i = 0; i < mapOfNodes.size; i++) {
-        if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
-            for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
-                tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
-                toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos + determinePos(i, j, "y");
+        try {
+            if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
+                for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
+                    tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
+                    toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos + determinePos(i, j, "y");
 
-                angle = Math.atan2(toy - mapOfNodes.get(i).yPos, tox - mapOfNodes.get(i).xPos);
+                    angle = Math.atan2(toy - mapOfNodes.get(i).yPos, tox - mapOfNodes.get(i).xPos);
 
-                ctx.beginPath();
-                ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
-                ctx.lineTo(tox, toy);
-                ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(mapOfNodes.get(i).xPos, mapOfNodes.get(i).yPos);
+                    ctx.lineTo(tox, toy);
+                    ctx.stroke();
 
-                ctx.lineTo(tox - radius * Math.cos(angle - Math.PI / 6), toy - radius * Math.sin(angle - Math.PI / 6));
-                ctx.stroke();
-                ctx.moveTo(tox, toy);
-                ctx.lineTo(tox - radius * Math.cos(angle + Math.PI / 6), toy - radius * Math.sin(angle + Math.PI / 6));
-                ctx.stroke();
+                    ctx.lineTo(tox - radius * Math.cos(angle - Math.PI / 6), toy - radius * Math.sin(angle - Math.PI / 6));
+                    ctx.stroke();
+                    ctx.moveTo(tox, toy);
+                    ctx.lineTo(tox - radius * Math.cos(angle + Math.PI / 6), toy - radius * Math.sin(angle + Math.PI / 6));
+                    ctx.stroke();
+                }
             }
+        } catch (error) {
+            console.error(error);
         }
     }
 }
