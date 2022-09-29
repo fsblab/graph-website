@@ -1,16 +1,23 @@
 package com.example.Graph;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/")
 public class GraphController {
+    private final MongoTemplate mongoTemplate;
+    private int dbCounter;
+
+    public GraphController(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+        this.dbCounter = -1;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadSite() {
@@ -164,5 +171,24 @@ public class GraphController {
         }
 
         return resultingMap;
+    }
+
+
+    @RequestMapping(value = "/getdb/{id}",
+                    method = RequestMethod.GET,
+                    consumes = {"application/json"},
+                    produces = {"application/json"})
+    public GraphModel findById(@PathVariable long id) {
+        return mongoTemplate.findById(id, GraphModel.class);
+    }
+
+
+    @RequestMapping(value = "/setdb/{type}",
+                    method = RequestMethod.POST,
+                    consumes = {"application/json"},
+                    produces = {"application/json"})
+    public GraphModel add(@PathVariable int type, @RequestBody HashMap<Integer, NewNode> graph) {
+        dbCounter++;
+        return mongoTemplate.save(new GraphModel(dbCounter, type, graph));
     }
 }

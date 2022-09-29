@@ -67,6 +67,7 @@ canvas {
 
 #computations {
 	clear: both;
+	float: left;
 	margin: 0%;
 	margin-left: 10px;
 	width: fit-content;
@@ -79,4 +80,11 @@ canvas {
 
 .comp {
 	margin: 0%;
+}
+
+#dbdiv {
+   	margin: 0%;
+   	margin-right: 10px;
+   	width: fit-content;
+   	float: right;
 }

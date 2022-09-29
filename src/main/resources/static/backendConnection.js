@@ -1,3 +1,5 @@
+var test;
+
 function sendGraphToBackend() {
     var resultingMap = new Map();
 
@@ -56,7 +58,6 @@ function sendGraphToBackend() {
             return;
         }
 
-        //for (var i = 0; i < Object.entries(xhr.response).length; i++) {
         for (var i = 0; i < numberOfNode; i++) {
             try {
                 resultingMap.set(i, new NewNode(i, xhr.response[i].xpos, xhr.response[i].ypos));
@@ -95,5 +96,70 @@ function sendGraphToBackend() {
             document.getElementById("checkbox" + i).style.visibility = "hidden";
             document.getElementById("weightOfConnection" + i).style.visibility = "hidden";
         }
+    }
+}
+
+
+function setdb() {
+    var type;
+
+    if (typeOfGraph == "connect") {
+        type = 0;
+    } else {
+        type = 1;
+    }
+
+    var URL = "http://localhost:8080/";
+
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("POST", URL + "setdb" + "/" + type);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(Object.fromEntries(mapOfNodes)));
+
+    xhr.onload = function() {
+        console.log(xhr.status);
+    }
+}
+
+
+function getdb() {
+    var resultingMap = new Map();
+    var id = document.getElementById("dbid").value;
+
+    var URL = "http://localhost:8080/";
+
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("GET", URL + "getdb" + "/" + id);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(id));
+
+    xhr.onload = function() {
+        console.log(xhr.status);
+
+        if(xhr.status != 200) {
+            alert("An Error occured: HTTP Statuscode " + xhr.status.toString());
+            return;
+        }
+
+        if (xhr.response.typeOfGraph == 0) {
+            typeOfGraph = "connect";
+        } else {
+            typeOfGraph = "directed";
+        }
+
+        for (var i = 0; i < Object.keys(xhr.response.mapOfNodes).length; i++) {
+            try {
+                resultingMap.set(i, new NewNode(i, parseInt(xhr.response.mapOfNodes[i].xpos), parseInt(xhr.response.mapOfNodes[i].ypos)));
+                resultingMap.get(i).connectTo(xhr.response.mapOfNodes[i].arrayOfConnections, xhr.response.mapOfNodes[i].arrayOfWeights);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        redrawCanvas(resultingMap);
+
+        mapOfNodes = resultingMap;
     }
 }

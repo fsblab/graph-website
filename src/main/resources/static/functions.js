@@ -46,8 +46,8 @@ function drawDirectedConnections(mapOfNodes, colour, lineWidth) {
         if (mapOfNodes.has(i)) {
             if (mapOfNodes.get(i).arrayOfConnections.length > 0) {
                 for (j = 0; j < mapOfNodes.get(i).arrayOfConnections.length; j++) {
-                    tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(i, j, "x");
-                    toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos + determinePos(i, j, "y");
+                    tox = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).xPos + determinePos(mapOfNodes, i, j, "x");
+                    toy = mapOfNodes.get(mapOfNodes.get(i).arrayOfConnections[j]).yPos + determinePos(mapOfNodes, i, j, "y");
 
                     angle = Math.atan2(toy - mapOfNodes.get(i).yPos, tox - mapOfNodes.get(i).xPos);
 
@@ -90,24 +90,28 @@ function redrawCanvas(mapOfNodes) {
 }
 
 
-function determinePos(outerIterator, innerIterator, xy) {
+function determinePos(mapOfNodes, outerIterator, innerIterator, xy) {
     var dx, dy, dxpos, dypos, angle;
 
-    dx = mapOfNodes.get(outerIterator).xPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).xPos;
-    dy = mapOfNodes.get(outerIterator).yPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).yPos;
+    try {
+        dx = mapOfNodes.get(outerIterator).xPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).xPos;
+        dy = mapOfNodes.get(outerIterator).yPos - mapOfNodes.get(mapOfNodes.get(outerIterator).arrayOfConnections[innerIterator]).yPos;
 
-    angle = Math.atan2(dy, dx);
+        angle = Math.atan2(dy, dx);
 
-    if (xy == "x") {
-        dxpos = Math.cos(angle) * (radius);
-        return dxpos;
-    }
-    else if (xy == "y") {
-        dypos = Math.sin(angle) * (radius);
-        return dypos;
-    }
-    else {
-        return;
+        if (xy == "x") {
+            dxpos = Math.cos(angle) * (radius);
+            return dxpos;
+        }
+        else if (xy == "y") {
+            dypos = Math.sin(angle) * (radius);
+            return dypos;
+        }
+        else {
+            return;
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
